@@ -1,0 +1,4 @@
+services:
+#    qu_re_p_test.example:
+#        class: QuRePTestBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,0 +1,8 @@
+qu_re_p_test:
+    resource: "@QuRePTestBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
