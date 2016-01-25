@@ -26,8 +26,15 @@
         "symfony/monolog-bundle": "^2.8",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
-        "incenteev/composer-parameter-handler": "^2.0"
+        "incenteev/composer-parameter-handler": "^2.0",
+        "solazs/qurep": "dev-master"
     },
+    "repositories" : [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:solazs/qurep.git"
+        }
+    ],
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^2.7"
