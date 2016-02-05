@@ -8,11 +8,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Solazs\QuReP\ApiBundle\Annotations\Entity\Type as PropType;
 
 /**
  * User
  *
- * @ORM\Table(name="qurep.testing_user")
+ * @ORM\Table(name="qurep_testing_user")
  * @ORM\Entity()
  * @UniqueEntity("username")
  * @ORM\HasLifecycleCallbacks

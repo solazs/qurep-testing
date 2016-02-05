@@ -2,16 +2,9 @@
 
 namespace QuRePTestBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Solazs\QuReP\ApiBundle\Controller\ApiController;
 
-class DefaultController extends Controller
+class DefaultController extends ApiController
 {
-    /**
-     * @Route("/")
-     */
-    public function indexAction()
-    {
-        return $this->render('QuRePTestBundle:Default:index.html.twig');
-    }
+
 }
