@@ -240,6 +240,14 @@ class User
     }
 
     /**
+     * @param User $children
+     */
+    public function addChildren($children)
+    {
+        $this->children->add($children);
+    }
+
+    /**
      * @return User
      */
     public function getParent()
@@ -253,5 +261,6 @@ class User
     public function setParent($parent)
     {
         $this->parent = $parent;
+        $parent->addChildren($this);
     }
 }
