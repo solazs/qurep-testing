@@ -32,14 +32,20 @@ class DefaultControllerTest extends RestTestCase
             "children" => []
         ],
         [
-            "displayName" => "Hibás Elemér",
-            "username" => "hibaselem"
-        ],
-        [
             "displayName" => "Pár Zoltán",
             "username" => "parzol",
             "email" => "parzol@e.info",
             "children" => []
+        ],
+        [
+            "displayName" => "Gyerekes Emil",
+            "username" => "gyeremil",
+            "email" => "gyeremil@e.info",
+            "children" => []
+        ],
+        [
+            "displayName" => "Hibás Elemér",
+            "username" => "hibaselem"
         ],
     ];
 
@@ -165,7 +171,7 @@ class DefaultControllerTest extends RestTestCase
                 'CONTENT_TYPE'          => 'application/json',
                 'HTTP_X-Requested-With' => 'XMLHttpRequest'
             ),
-            json_encode(self::$users[1])
+            json_encode(self::$users[3])
         );
 
         $response = $client->getResponse();
@@ -182,7 +188,7 @@ class DefaultControllerTest extends RestTestCase
         $this->assertEquals('{"error":{"global":[],"fields":{"email":"This value should not be blank'
             . '."}},"code":400}', $response->getContent());
 
-        unset(self::$users[1]);
+        unset(self::$users[3]);
         self::$users = array_values(self::$users);
     }
 
@@ -208,6 +214,11 @@ class DefaultControllerTest extends RestTestCase
                 unset($user['updatedAt']);
             }
         }
+
+        $child = self::$users[2];
+        $child['parent'] = self::$users[0]['id'];//array('id' => $responseData['id']);
+        self::$users[2] = $child;
+
         $client = static::createClient();
         $client->request(
             "POST",
@@ -235,5 +246,27 @@ class DefaultControllerTest extends RestTestCase
         $this->assertEntityArrayEquals(self::$users, $responseData);
 
         self::$users = $responseData;
+    }
+
+    /**
+     * @depends testBulkUpdate
+     */
+    function testBulkDelete(){
+        $client = static::createClient();
+        $client->request(
+            "DELETE",
+            "/users/bulk",
+            array(),
+            array(),
+            array(
+                'CONTENT_TYPE'          => 'application/json',
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ),
+            json_encode(self::$users)
+        );
+
+
+        $response = $client->getResponse();
+        $this->assertEquals(204, $response->getStatusCode());
     }
 }
