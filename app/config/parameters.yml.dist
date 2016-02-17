@@ -21,4 +21,4 @@ parameters:
     qurep_entities:
         -
             entity_name: users
-            class: MyApp\DataBundle\Entity\User
+            class: QuRePTestBundle\Entity\User
