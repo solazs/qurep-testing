@@ -28,20 +28,17 @@ class DefaultControllerTest extends RestTestCase
         [
             "displayName" => "Teszt Elek",
             "username" => "telek",
-            "email" => "telek@valami.hu",
-            "children" => []
+            "email" => "telek@valami.hu"
         ],
         [
             "displayName" => "Pár Zoltán",
             "username" => "parzol",
-            "email" => "parzol@e.info",
-            "children" => []
+            "email" => "parzol@e.info"
         ],
         [
             "displayName" => "Gyerekes Emil",
             "username" => "gyeremil",
-            "email" => "gyeremil@e.info",
-            "children" => []
+            "email" => "gyeremil@e.info"
         ],
         [
             "displayName" => "Hibás Elemér",
@@ -215,10 +212,6 @@ class DefaultControllerTest extends RestTestCase
             }
         }
 
-        $child = self::$users[2];
-        $child['parent'] = self::$users[0]['id'];//array('id' => $responseData['id']);
-        self::$users[2] = $child;
-
         $client = static::createClient();
         $client->request(
             "POST",
@@ -268,5 +261,7 @@ class DefaultControllerTest extends RestTestCase
 
         $response = $client->getResponse();
         $this->assertEquals(204, $response->getStatusCode());
+
+        $this->testEmpty();
     }
 }
