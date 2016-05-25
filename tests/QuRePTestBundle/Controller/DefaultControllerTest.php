@@ -28,20 +28,17 @@ class DefaultControllerTest extends RestTestCase
         [
             "displayName" => "Teszt Elek",
             "username" => "telek",
-            "email" => "telek@valami.hu",
-            "children" => []
+            "email" => "telek@valami.hu"
         ],
         [
             "displayName" => "Pár Zoltán",
             "username" => "parzol",
-            "email" => "parzol@e.info",
-            "children" => []
+            "email" => "parzol@e.info"
         ],
         [
             "displayName" => "Gyerekes Emil",
             "username" => "gyeremil",
-            "email" => "gyeremil@e.info",
-            "children" => []
+            "email" => "gyeremil@e.info"
         ],
         [
             "displayName" => "Hibás Elemér",
@@ -215,10 +212,6 @@ class DefaultControllerTest extends RestTestCase
             }
         }
 
-        $child = self::$users[2];
-        $child['parent'] = self::$users[0]['id'];//array('id' => $responseData['id']);
-        self::$users[2] = $child;
-
         $client = static::createClient();
         $client->request(
             "POST",
@@ -251,6 +244,56 @@ class DefaultControllerTest extends RestTestCase
     /**
      * @depends testBulkUpdate
      */
+    public function testExpand()
+    {
+        $client = static::createClient();
+        $client->request(
+            "POST",
+            "/users/" . self::$users[2]['id'],
+            array(),
+            array(),
+            array(
+                'CONTENT_TYPE'          => 'application/json',
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ),
+            json_encode(array("parent" => self::$users[0]['id']))
+        );
+
+        $response = $client->getResponse();
+
+        $this->assertJsonResponse($response, 201);
+
+        $responseData = json_decode($response->getContent(), true);
+
+        if ($responseData === null){
+            $this->fail("Not valid JSON or null response!");
+        }
+
+        $this->assertEntityEquals(self::$users[2], $responseData);
+
+        $child = self::$users[2];
+        $child['parent'] = self::$users[0];
+        self::$users[2] = $child;
+
+        $client->request('GET', '/users/' . self::$users[2]['id'] . '?expand=parent');
+
+        $response = $client->getResponse();
+
+        $this->assertJsonResponse($response);
+
+        $responseData = json_decode($response->getContent(), true);
+
+        if ($responseData === null){
+            $this->fail("Not valid JSON or null response!");
+        }
+
+        $this->assertEntityEquals(self::$users[2], $responseData);
+        
+    }
+
+    /**
+     * @depends testExpand
+     */
     function testBulkDelete(){
         $client = static::createClient();
         $client->request(
@@ -262,11 +305,23 @@ class DefaultControllerTest extends RestTestCase
                 'CONTENT_TYPE'          => 'application/json',
                 'HTTP_X-Requested-With' => 'XMLHttpRequest'
             ),
-            json_encode(self::$users)
+            json_encode([self::$users[2], self::$users[1]])
         );
 
 
         $response = $client->getResponse();
         $this->assertEquals(204, $response->getStatusCode());
+
+        $client->request('GET', '/users');
+
+        $response = $client->getResponse();
+
+        $responseData = json_decode($response->getContent(), true);
+
+        if ($responseData === null){
+            $this->fail("Not valid JSON or null response!");
+        }
+
+        $this->assertEntityEquals([self::$users[0]], $responseData);
     }
 }
