@@ -56,7 +56,7 @@ class DefaultControllerTest extends RestTestCase
 
         $this->assertJsonResponse($response);
 
-        $this->assertEquals("[]", $response->getContent());
+        $this->assertEquals('{"data":[],"meta":[]}', $response->getContent());
     }
 
     /**
@@ -87,9 +87,9 @@ class DefaultControllerTest extends RestTestCase
             $this->fail("Not valid JSON or null response!");
         }
 
-        $this->assertEntityEquals(self::$users[0], $responseData);
+        $this->assertEntityEquals(self::$users[0], $responseData["data"]);
 
-        self::$users[0] = $responseData;
+        self::$users[0] = $responseData["data"];
     }
 
     /**
@@ -137,7 +137,7 @@ class DefaultControllerTest extends RestTestCase
             $this->fail("Not valid JSON or null response!");
         }
 
-        $this->assertEntityEquals(self::$users[0], $responseData);
+        $this->assertEntityEquals(self::$users[0], $responseData["data"]);
     }
 
     /**
@@ -236,9 +236,9 @@ class DefaultControllerTest extends RestTestCase
             $this->fail("Not valid JSON or null response!");
         }
 
-        $this->assertEntityArrayEquals(self::$users, $responseData);
+        $this->assertEntityArrayEquals(self::$users, $responseData["data"]);
 
-        self::$users = $responseData;
+        self::$users = $responseData["data"];
     }
 
     /**
@@ -269,7 +269,7 @@ class DefaultControllerTest extends RestTestCase
             $this->fail("Not valid JSON or null response!");
         }
 
-        $this->assertEntityEquals(self::$users[2], $responseData);
+        $this->assertEntityEquals(self::$users[2], $responseData["data"]);
 
         $child = self::$users[2];
         $child['parent'] = self::$users[0];
@@ -287,7 +287,7 @@ class DefaultControllerTest extends RestTestCase
             $this->fail("Not valid JSON or null response!");
         }
 
-        $this->assertEntityEquals(self::$users[2], $responseData);
+        $this->assertEntityEquals(self::$users[2], $responseData["data"]);
         
     }
 
@@ -322,6 +322,6 @@ class DefaultControllerTest extends RestTestCase
             $this->fail("Not valid JSON or null response!");
         }
 
-        $this->assertEntityEquals([self::$users[0]], $responseData);
+        $this->assertEntityEquals([self::$users[0]], $responseData["data"]);
     }
 }
