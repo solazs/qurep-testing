@@ -3,6 +3,7 @@
 namespace QuRePTestBundle\Tests\Controller;
 
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 
 class DefaultControllerTest extends RestTestCase
@@ -15,6 +16,7 @@ class DefaultControllerTest extends RestTestCase
 
         $kernel = static::createKernel();
         $kernel->boot();
+        /* @var $em EntityManager */
         $em = $kernel->getContainer()->get('doctrine')->getManager();
         $schemaTool = new SchemaTool($em);
         $metadata = $em->getMetadataFactory()->getAllMetadata();
@@ -322,6 +324,33 @@ class DefaultControllerTest extends RestTestCase
         $this->assertEntityEquals(self::$users[2], $responseData["data"]);
 
     }
+
+    /* Fckin $_SERVER['QUERY_STRING'] can't be populated by tests!!!
+    public function testFilter()
+    {
+        $client = static::createClient();
+
+        $client->request('GET',
+            '/users',
+            ['filter' => 'parent.name,eq,' . self::$users[0]['displayName']]
+        );
+
+        $response = $client->getResponse();
+        echo "Got response: " . $response;
+
+        $this->assertJsonResponse($response);
+
+        $responseData = json_decode($response->getContent(), true);
+
+        if ($responseData === null){
+            $this->fail("Not valid JSON or null response!");
+        }
+
+        unset(self::$users[2]['parent']);
+
+        $this->assertEntityEquals(self::$users[2], $responseData["data"]);
+
+    }*/
 
     /**
      * @depends testAdvancedExpand
