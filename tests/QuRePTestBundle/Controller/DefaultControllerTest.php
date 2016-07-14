@@ -278,6 +278,7 @@ class DefaultControllerTest extends RestTestCase
         $client->request('GET', '/users/' . self::$users[2]['id'] . '?expand=parent');
 
         $response = $client->getResponse();
+        echo "Got response: " . $response;
 
         $this->assertJsonResponse($response);
 
@@ -293,6 +294,37 @@ class DefaultControllerTest extends RestTestCase
 
     /**
      * @depends testExpand
+     */
+    public function testAdvancedExpand()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/users/' . self::$users[2]['id'] . '?expand=parent.children');
+
+        $response = $client->getResponse();
+        echo "Got response: " . $response;
+
+        $this->assertJsonResponse($response);
+
+        $responseData = json_decode($response->getContent(), true);
+
+        if ($responseData === null){
+            $this->fail("Not valid JSON or null response!");
+        }
+
+        $grandchild = self::$users[2];
+        unset($grandchild['parent']);
+
+        $child = self::$users[2]['parent'];
+        $child['children'] = array($grandchild);
+        self::$users[2]['parent'] = $child;
+
+        $this->assertEntityEquals(self::$users[2], $responseData["data"]);
+
+    }
+
+    /**
+     * @depends testAdvancedExpand
      */
     function testBulkDelete(){
         $client = static::createClient();

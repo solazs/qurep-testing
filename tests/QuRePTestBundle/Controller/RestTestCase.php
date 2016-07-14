@@ -30,12 +30,20 @@ class RestTestCase extends WebTestCase
     {
         foreach (array_keys($entity1) as $key) {
             if ($key != "updatedAt" && $key != "createdAt" && $key != "id") {
-                $this->assertEquals($entity1[$key], $entity2[$key]);
+                if (is_array($entity1[$key])){
+                    $this->assertEntityEquals($entity1[$key], $entity2[$key]);
+                } else {
+                    $this->assertEquals($entity1[$key], $entity2[$key]);
+                }
             }
         }
         foreach (array_keys($entity2) as $key) {
             if ($key != "updatedAt" && $key != "createdAt" && $key != "id") {
-                $this->assertEquals($entity1[$key], $entity2[$key]);
+                if (is_array($entity2[$key])){
+                    $this->assertEntityEquals($entity1[$key], $entity2[$key]);
+                } else {
+                    $this->assertEquals($entity1[$key], $entity2[$key]);
+                }
             }
         }
     }
