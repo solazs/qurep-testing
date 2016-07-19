@@ -55,6 +55,7 @@ class DefaultControllerTest extends RestTestCase
         $client->request('GET', '/users');
 
         $response = $client->getResponse();
+        echo "Got response: " . $response;
 
         $this->assertJsonResponse($response);
 
@@ -325,14 +326,16 @@ class DefaultControllerTest extends RestTestCase
 
     }
 
-    /* Fckin $_SERVER['QUERY_STRING'] can't be populated by tests!!!
+    /**
+     * @depends testAdvancedExpand
+     */
     public function testFilter()
     {
         $client = static::createClient();
 
         $client->request('GET',
             '/users',
-            ['filter' => 'parent.name,eq,' . self::$users[0]['displayName']]
+            ['filter' => 'parent.displayName,eq,' . self::$users[0]['displayName']]
         );
 
         $response = $client->getResponse();
@@ -348,12 +351,12 @@ class DefaultControllerTest extends RestTestCase
 
         unset(self::$users[2]['parent']);
 
-        $this->assertEntityEquals(self::$users[2], $responseData["data"]);
+        $this->assertEntityArrayEquals([self::$users[2]], $responseData["data"]);
 
-    }*/
+    }
 
     /**
-     * @depends testAdvancedExpand
+     * @depends testFilter
      */
     function testBulkDelete(){
         $client = static::createClient();
