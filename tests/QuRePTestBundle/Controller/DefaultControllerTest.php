@@ -6,6 +6,7 @@ namespace QuRePTestBundle\Tests\Controller;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 
+// TODO: write tests for pagination and pagination meta
 class DefaultControllerTest extends RestTestCase
 {
     public static function setUpBeforeClass()
@@ -59,7 +60,7 @@ class DefaultControllerTest extends RestTestCase
 
         $this->assertJsonResponse($response);
 
-        $this->assertEquals('{"data":[],"meta":[]}', $response->getContent());
+        $this->assertEquals('{"data":[],"meta":{"limit":100,"offset":0,"count":0}}', $response->getContent());
     }
 
     /**
