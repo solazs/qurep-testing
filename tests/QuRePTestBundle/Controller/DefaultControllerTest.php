@@ -359,6 +359,60 @@ class DefaultControllerTest extends RestTestCase
     /**
      * @depends testFilter
      */
+    public function testPagination()
+    {
+        $client = static::createClient();
+
+        $client->request('GET',
+            '/users',
+            [
+              'offset' => 0,
+              'limit' => 20
+            ]
+        );
+
+        $response = $client->getResponse();
+        echo "Got response: " . $response;
+
+        $this->assertJsonResponse($response);
+
+        $responseData = json_decode($response->getContent(), true);
+
+        if ($responseData === null){
+            self::fail("Not valid JSON or null response!");
+        }
+
+        $this->assertEquals(['limit' => 20, 'offset' => 0, 'count'=>3], $responseData['meta']);
+
+        $this->assertEntityArrayEquals(self::$users, $responseData["data"]);
+
+        $client->request('GET',
+          '/users',
+          [
+            'offset' => 1,
+            'limit' => 20
+          ]
+        );
+
+        $response = $client->getResponse();
+        echo "Got response: " . $response;
+
+        $this->assertJsonResponse($response);
+
+        $responseData = json_decode($response->getContent(), true);
+
+        if ($responseData === null){
+            self::fail("Not valid JSON or null response!");
+        }
+
+        $this->assertEquals(['limit' => 20, 'offset' => 1, 'count'=>3], $responseData['meta']);
+
+        $this->assertEntityArrayEquals([self::$users[1],self::$users[2]], $responseData["data"]);
+    }
+
+    /**
+     * @depends testFilter
+     */
     function testBulkDelete(){
         $client = static::createClient();
         $client->request(

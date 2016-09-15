@@ -30,6 +30,9 @@ class RestTestCase extends WebTestCase
     {
         foreach (array_keys($entity1) as $key) {
             if ($key != "updatedAt" && $key != "createdAt" && $key != "id") {
+                if (!array_key_exists($key, $entity2)){
+                    self::fail('Key ' . $key . ' does not exists in entity2!');
+                }
                 if (is_array($entity1[$key])){
                     $this->assertEntityEquals($entity1[$key], $entity2[$key]);
                 } else {
@@ -39,6 +42,9 @@ class RestTestCase extends WebTestCase
         }
         foreach (array_keys($entity2) as $key) {
             if ($key != "updatedAt" && $key != "createdAt" && $key != "id") {
+                if (!array_key_exists($key, $entity1)){
+                    self::fail('Key ' . $key . ' does not exists in entity1!');
+                }
                 if (is_array($entity2[$key])){
                     $this->assertEntityEquals($entity1[$key], $entity2[$key]);
                 } else {
