@@ -60,7 +60,7 @@ class DefaultControllerTest extends RestTestCase
 
         $this->assertJsonResponse($response);
 
-        $this->assertEquals('{"data":[],"meta":{"limit":100,"offset":0,"count":0}}', $response->getContent());
+        $this->assertEquals('{"data":[],"meta":{"limit":25,"offset":0,"count":0}}', $response->getContent());
     }
 
     /**
