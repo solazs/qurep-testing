@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Solazs\QuReP\ApiBundle\Annotations\Entity\FormProperty as PropType;
+use Solazs\QuReP\ApiBundle\Annotations\Entity\Field;
 
 /**
  * User
@@ -32,6 +32,7 @@ class User
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Field
      */
     private $id;
 
@@ -43,7 +44,7 @@ class User
      * @Length(min="3", max="255",
      *     minMessage="Username must be at least 3 characters long",
      *     maxMessage="Username must be maximum 255 characters long")
-     * @PropType(type="TextType")
+     * @Field(type="TextType")
      */
     private $username;
 
@@ -51,7 +52,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="displayName", type="string", length=255)
-     * @PropType(type="TextType")
+     * @Field(type="TextType")
      */
     private $displayName;
 
@@ -61,21 +62,23 @@ class User
      * @ORM\Column(name="email", type="string", length=255)
      * @NotBlank()
      * @Email()
-     * @PropType(type="EmailType")
+     * @Field(type="EmailType")
      */
     private $email;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="User", mappedBy="parent", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="parent", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @Field
      */
     private $children;
 
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="children", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="children", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @Field
      */
     private $parent;
 
@@ -83,6 +86,7 @@ class User
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
+     * @Field
      */
     private $createdAt;
 
@@ -90,6 +94,7 @@ class User
      * @var \DateTime
      *
      * @ORM\Column(name="updatedAt", type="datetime")
+     * @Field
      */
     private $updatedAt;
 
