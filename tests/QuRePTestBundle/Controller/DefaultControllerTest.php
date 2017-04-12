@@ -29,22 +29,22 @@ class DefaultControllerTest extends RestTestCase
 
     static $users = [
       [
-        "displayName" => "Teszt Elek",
+        "display_name" => "Teszt Elek",
         "username"    => "telek",
         "email"       => "telek@valami.hu",
       ],
       [
-        "displayName" => "Pár Zoltán",
+        "display_name" => "Pár Zoltán",
         "username"    => "parzol",
         "email"       => "parzol@e.info",
       ],
       [
-        "displayName" => "Gyerekes Emil",
+        "display_name" => "Gyerekes Emil",
         "username"    => "gyeremil",
         "email"       => "gyeremil@e.info",
       ],
       [
-        "displayName" => "Hibás Elemér",
+        "display_name" => "Hibás Elemér",
         "username"    => "hibaselem",
       ],
     ];
@@ -103,10 +103,10 @@ class DefaultControllerTest extends RestTestCase
     public function testUpdate()
     {
         $putData = [
-          "displayName" => "Teszt Elek Rendesen",
+          "display_name" => "Teszt Elek Rendesen",
         ];
         $user = self::$users[0];
-        $user["displayName"] = $putData["displayName"];
+        $user["display_name"] = $putData["display_name"];
         self::$users[0] = $user;
 
         $client = static::createClient();
@@ -191,7 +191,7 @@ class DefaultControllerTest extends RestTestCase
         }
 
         $this->assertEquals(
-          '{"error":"Invalid Form","form":{"children":{"username":{},"displayName":{},"email":{"errors":["This'
+          '{"error":"Invalid Form","form":{"children":{"username":{},"display_name":{},"email":{"errors":["This'
           .' value should not be blank."]},"children":{},"parent":{}}},"code":400}',
           $response->getContent()
         );
@@ -209,18 +209,18 @@ class DefaultControllerTest extends RestTestCase
             if (array_key_exists("id", $user)) {
                 unset($user['id']);
             }
-            if (array_key_exists("createdAt", $user)) {
-                unset($user['createdAt']);
-                unset($user['updatedAt']);
+            if (array_key_exists("created_at", $user)) {
+                unset($user['created_at']);
+                unset($user['updated_at']);
             }
         }
 
         $this->testPost();
 
         foreach (self::$users as &$user) {
-            if (array_key_exists("createdAt", $user)) {
-                unset($user['createdAt']);
-                unset($user['updatedAt']);
+            if (array_key_exists("created_at", $user)) {
+                unset($user['created_at']);
+                unset($user['updated_at']);
             }
         }
 
@@ -343,7 +343,7 @@ class DefaultControllerTest extends RestTestCase
         $client->request(
           'GET',
           '/users',
-          ['filter' => 'parent.displayName,eq,'.self::$users[0]['displayName']]
+          ['filter' => 'parent.display_name,eq,'.self::$users[0]['display_name']]
         );
 
         $response = $client->getResponse();
