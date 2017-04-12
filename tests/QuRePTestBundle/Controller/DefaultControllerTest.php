@@ -29,22 +29,22 @@ class DefaultControllerTest extends RestTestCase
 
     static $users = [
       [
-        "display_name" => "Teszt Elek",
+        "name" => "Teszt Elek",
         "username"    => "telek",
         "email"       => "telek@valami.hu",
       ],
       [
-        "display_name" => "Pár Zoltán",
+        "name" => "Pár Zoltán",
         "username"    => "parzol",
         "email"       => "parzol@e.info",
       ],
       [
-        "display_name" => "Gyerekes Emil",
+        "name" => "Gyerekes Emil",
         "username"    => "gyeremil",
         "email"       => "gyeremil@e.info",
       ],
       [
-        "display_name" => "Hibás Elemér",
+        "name" => "Hibás Elemér",
         "username"    => "hibaselem",
       ],
     ];
@@ -103,10 +103,10 @@ class DefaultControllerTest extends RestTestCase
     public function testUpdate()
     {
         $putData = [
-          "display_name" => "Teszt Elek Rendesen",
+          "name" => "Teszt Elek Rendesen",
         ];
         $user = self::$users[0];
-        $user["display_name"] = $putData["display_name"];
+        $user["name"] = $putData["name"];
         self::$users[0] = $user;
 
         $client = static::createClient();
@@ -191,7 +191,7 @@ class DefaultControllerTest extends RestTestCase
         }
 
         $this->assertEquals(
-          '{"error":"Invalid Form","form":{"children":{"username":{},"display_name":{},"email":{"errors":["This'
+          '{"error":"Invalid Form","form":{"children":{"username":{},"name":{},"email":{"errors":["This'
           .' value should not be blank."]},"children":{},"parent":{}}},"code":400}',
           $response->getContent()
         );
@@ -343,7 +343,7 @@ class DefaultControllerTest extends RestTestCase
         $client->request(
           'GET',
           '/users',
-          ['filter' => 'parent.display_name,eq,'.self::$users[0]['display_name']]
+          ['filter' => 'parent.name,eq,'.self::$users[0]['name']]
         );
 
         $response = $client->getResponse();

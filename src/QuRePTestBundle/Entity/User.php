@@ -52,7 +52,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="displayName", type="string", length=255)
-     * @Field(type="TextType")
+     * @Field(type="TextType", label="name")
      */
     private $displayName;
 
