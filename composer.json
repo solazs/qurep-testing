@@ -1,6 +1,6 @@
 {
     "name": "solazs/qurep-testing",
-    "license": "proprietary",
+    "license": "MIT",
     "type": "project",
     "autoload": {
         "psr-4": {
