@@ -13,5 +13,6 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
     qurep_entities:
-        -  entity_name: users
-           class: QuRePTestBundle\Entity\User
+        -
+            entity_name: users
+            class: QuRePTestBundle\Entity\User
