@@ -11,7 +11,7 @@ parameters:
     # database_path: "%kernel.root_dir%/data.db3"
 
 
-    memcache_hosts:
+    memcached_hosts:
         -
             dsn: 127.0.0.1
             port: 11211
